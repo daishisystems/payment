@@ -29,9 +29,9 @@ var AllRoutes = Routes{
 		handlers.GetAll,
 	},
 	Route{
-		"TodoShow",
-		"GET",
-		"/todos/{todoId}",
-		handlers.TodoShow,
+		"Save",
+		"POST",
+		"/payment-cards",
+		handlers.Save,
 	},
 }

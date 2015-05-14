@@ -6,6 +6,12 @@ import (
 	"github.com/daishisystems/payment/paymentcard"
 )
 
+type viewRow struct {
+	Id    string
+	Key   string
+	Value paymentcard.PaymentCard
+}
+
 var bucket gocb.Bucket
 
 func Init(b *gocb.Bucket) {
@@ -20,12 +26,6 @@ func GetById(id string) *paymentcard.PaymentCard {
 	return &pc
 }
 
-type viewRow struct {
-	Id    string
-	Key   string
-	Value paymentcard.PaymentCard
-}
-
 func GetAll() *[]paymentcard.PaymentCard {
 
 	vq := gocb.NewViewQuery("getallfull", "getallfull")
@@ -38,8 +38,18 @@ func GetAll() *[]paymentcard.PaymentCard {
 		cards = append(cards, row.Value)
 	}
 	if err := rows.Close(); err != nil {
-		fmt.Printf("View Query Error: %s", err)
+		fmt.Printf("View Query Error: %s", err) // todo: Return an error here.
 	}
 
 	return &cards
+}
+
+func Save(pc *paymentcard.PaymentCard) string {
+
+	id := "12345"
+	pc.Id = id
+
+	bucket.Upsert(id, &pc, 0)
+
+	return id
 }
