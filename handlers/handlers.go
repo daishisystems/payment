@@ -28,9 +28,14 @@ type PaymentCard struct {
 	Metadata Metadata  `json:"metadata"`
 }
 
+var cluster gocb.Cluster
+
+func Init(c *gocb.Cluster) {
+	cluster = *c
+}
+
 func Index(w http.ResponseWriter, r *http.Request) {
 
-	cluster, _ := gocb.Connect("couchbase://52.17.36.153")
 	bucket, _ := cluster.OpenBucket("ryanair", "")
 
 	var paymentCard PaymentCard
