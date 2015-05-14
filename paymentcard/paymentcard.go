@@ -3,9 +3,9 @@ package paymentcard
 import "time"
 
 type Card struct {
-	Number      string    `json:"number"`
-	ExpiryMonth time.Time `json:"exp_month"`
-	ExpiryYear  time.Time `json:"exp_year"`
+	Number      string `json:"number"`
+	ExpiryMonth uint8  `json:"exp_month"`
+	ExpiryYear  uint16 `json:"exp_year"`
 }
 
 type Metadata struct {

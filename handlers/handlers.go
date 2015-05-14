@@ -7,7 +7,6 @@ import (
 
 	"github.com/couchbaselabs/gocb"
 	"github.com/daishisystems/payment/couchbase"
-	"github.com/daishisystems/payment/todo"
 	"github.com/gorilla/mux"
 )
 
@@ -16,25 +15,27 @@ func Init(b *gocb.Bucket) {
 	couchbase.Init(b)
 }
 
-func Index(w http.ResponseWriter, r *http.Request) {
+func GetById(w http.ResponseWriter, r *http.Request) {
 
-	pc := couchbase.GetById("01b05e21-fc3a-4049-831a-14c8a2ef667d")
-	fmt.Printf("%s is %s\n", pc.Id, pc.Card.Number)
-}
+	vars := mux.Vars(r)
+	id := vars["id"]
 
-func TodoIndex(w http.ResponseWriter, r *http.Request) {
-
-	todos := todo.Todos{
-		todo.Todo{Name: "Write presentation"},
-		todo.Todo{Name: "Host meetup"},
-	}
+	pc := couchbase.GetById(id)
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
 
-	if err := json.NewEncoder(w).Encode(todos); err != nil {
-		panic(err)
-	}
+	json.NewEncoder(w).Encode(&pc)
+}
+
+func GetAll(w http.ResponseWriter, r *http.Request) {
+
+	cards := couchbase.GetAll()
+
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+
+	json.NewEncoder(w).Encode(&cards)
 }
 
 func TodoShow(w http.ResponseWriter, r *http.Request) {

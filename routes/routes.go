@@ -17,16 +17,16 @@ type Routes []Route
 
 var AllRoutes = Routes{
 	Route{
-		"Index",
+		"GetById",
 		"GET",
-		"/",
-		handlers.Index,
+		"/payment-cards/{id}",
+		handlers.GetById,
 	},
 	Route{
-		"TodoIndex",
+		"GetAll",
 		"GET",
-		"/todos",
-		handlers.TodoIndex,
+		"/payment-cards",
+		handlers.GetAll,
 	},
 	Route{
 		"TodoShow",
