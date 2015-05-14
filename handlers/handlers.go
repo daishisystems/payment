@@ -4,29 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/couchbaselabs/gocb"
+	"github.com/daishisystems/payment/paymentcard"
 	"github.com/daishisystems/payment/todo"
 	"github.com/gorilla/mux"
 )
-
-type Card struct {
-	Number      string    `json:"number"`
-	ExpiryMonth time.Time `json:"exp_month"`
-	ExpiryYear  time.Time `json:"exp_year"`
-}
-
-type Metadata struct {
-	PaymentType string `json:"payment_type"`
-}
-
-type PaymentCard struct {
-	Id       string    `json:"id"`
-	Created  time.Time `json:"created"`
-	Card     Card      `json:"card"`
-	Metadata Metadata  `json:"metadata"`
-}
 
 var (
 	cluster gocb.Cluster
@@ -40,7 +23,7 @@ func Init(c *gocb.Cluster, b *gocb.Bucket) {
 
 func Index(w http.ResponseWriter, r *http.Request) {
 
-	var paymentCard PaymentCard
+	var paymentCard paymentcard.PaymentCard
 	bucket.Get("01b05e21-fc3a-4049-831a-14c8a2ef667d", &paymentCard)
 
 	fmt.Printf("%s is %s\n", paymentCard.Id, paymentCard.Card.Number)
