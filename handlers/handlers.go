@@ -6,27 +6,20 @@ import (
 	"net/http"
 
 	"github.com/couchbaselabs/gocb"
-	"github.com/daishisystems/payment/paymentcard"
+	"github.com/daishisystems/payment/couchbase"
 	"github.com/daishisystems/payment/todo"
 	"github.com/gorilla/mux"
 )
 
-var (
-	cluster gocb.Cluster
-	bucket  gocb.Bucket
-)
+func Init(b *gocb.Bucket) {
 
-func Init(c *gocb.Cluster, b *gocb.Bucket) {
-	cluster = *c
-	bucket = *b
+	couchbase.Init(b)
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
 
-	var paymentCard paymentcard.PaymentCard
-	bucket.Get("01b05e21-fc3a-4049-831a-14c8a2ef667d", &paymentCard)
-
-	fmt.Printf("%s is %s\n", paymentCard.Id, paymentCard.Card.Number)
+	pc := couchbase.GetById("01b05e21-fc3a-4049-831a-14c8a2ef667d")
+	fmt.Printf("%s is %s\n", pc.Id, pc.Card.Number)
 }
 
 func TodoIndex(w http.ResponseWriter, r *http.Request) {

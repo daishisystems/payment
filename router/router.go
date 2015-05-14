@@ -10,9 +10,9 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func NewRouter(c *gocb.Cluster, b *gocb.Bucket) *mux.Router {
+func NewRouter(b *gocb.Bucket) *mux.Router {
 
-	handlers.Init(c, b)
+	handlers.Init(b)
 	router := mux.NewRouter().StrictSlash(true)
 
 	for _, route := range routes.AllRoutes {
